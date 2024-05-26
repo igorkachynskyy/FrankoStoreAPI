@@ -1,0 +1,419 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AuthenticationInput {
+  login: String!
+  password: String!
+}
+
+type AuthenticationPayload {
+  accessToken: String!
+  refreshToken: String!
+}
+
+input CreateDiscoutTypeInput {
+  name: String!
+  percentage: Float!
+}
+
+input CreateFileInput {
+  file: String!
+  fileExtension: String!
+  fileName: String!
+  fileSize: Float!
+}
+
+input CreateMessageInput {
+  email: String!
+  phoneNumber: String!
+  textMessage: String!
+}
+
+input CreateOrderInput {
+  deliveryAddress: String
+  isSelfDelivery: Boolean!
+  products: [ProductQuantityInput!]!
+}
+
+input CreateProcurementInformationInput {
+  amount: Float!
+  description: String!
+  orderedDate: DateTime!
+  productId: Float!
+  purchasePrice: Float!
+  supplierId: Float!
+}
+
+input CreateProductCategoryInput {
+  endDateRange: DateTime
+  name: String!
+  startDateRange: DateTime
+}
+
+input CreateProductInput {
+  categories: [CreateProductCategoryInput!]!
+  description: String!
+  height: Float!
+  images: [CreateFileInput!]!
+  length: Float!
+  name: String!
+  retailPrice: Float!
+  size: SizeEnum!
+  width: Float!
+}
+
+input CreateSupplierInput {
+  address: String!
+  companyName: String!
+  email: String!
+  phoneNumber: String!
+  website: String!
+}
+
+input CreateUserInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  phone: String!
+  roles: [RoleEnum!]!
+  username: String!
+  website: String
+}
+
+input DateRangeInput {
+  end: DateTime
+  start: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DiscountType {
+  id: Float!
+  name: String!
+  percentage: Float!
+}
+
+type File {
+  fileExtension: String!
+  fileName: String!
+  id: Int!
+  path: String!
+  size: Float!
+  updatedAt: DateTime!
+}
+
+input FindOptionsMessageInput {
+  emails: [String!]
+  ids: [Float!]
+  phoneNumbers: [String!]
+  recevicedDate: DateRangeInput
+  search: String
+  skip: Int
+  take: Int
+}
+
+input FindOptionsOrderInput {
+  createdAt: DateRangeInput
+  customerIds: [Float!]
+  executorIds: [Float!]
+  ids: [Float!]
+  isPaid: Boolean
+  skip: Int
+  statuses: [OrderStatusEnum!]
+  summaryPayment: NumericRangeInput
+  take: Int
+  updatedAt: DateRangeInput
+}
+
+input FindOptionsProcurementInformationInput {
+  amount: NumericRangeInput!
+  description: String!
+  orderedDate: DateRangeInput!
+  product: FindOptionsProductInput!
+  purchasePrice: NumericRangeInput!
+  supplierCompanyName: String!
+}
+
+input FindOptionsProductCategoryInput {
+  endDateRange: DateTime
+  ids: [Float!]
+  name: String
+  startDateRange: DateTime
+}
+
+input FindOptionsProductInput {
+  amount: NumericRangeInput
+  categories: FindOptionsProductCategoryInput
+  description: String
+  height: NumericRangeInput
+  ids: [Float!]
+  length: NumericRangeInput
+  name: String
+  retailPrice: NumericRangeInput
+  sizes: [SizeEnum!]
+  skip: Int
+  take: Int
+  width: NumericRangeInput
+}
+
+type Message {
+  email: String!
+  id: Float!
+  messageStatus: MessageStatusEnum!
+  phoneNumber: String!
+  receivedDate: DateTime!
+  textMessage: String!
+}
+
+enum MessageStatusEnum {
+  Active
+  Banned
+  OnHold
+  Readed
+  Solved
+}
+
+type Mutation {
+  capturePayment(orderId: Float!): Float!
+  createDiscountType(discountType: CreateDiscoutTypeInput!): DiscountType!
+  createOrder(order: CreateOrderInput!): Order!
+  createProcurementInformation(procurementInformation: CreateProcurementInformationInput!): ProcurementInformation!
+  createProduct(product: CreateProductInput!): Product!
+  createProductCategory(productCategory: CreateProductCategoryInput!): ProductCategory!
+  createSupplier(supplier: CreateSupplierInput!): Supplier!
+  grantDiscountTypeForUser(discountTypeId: Float!, userId: Float!): User!
+  grantDiscountTypeOnProduct(discountTypeId: Float!, productId: Float!): Product!
+  login(authenticationInput: AuthenticationInput!): AuthenticationPayload!
+  refresh: AuthenticationPayload!
+  register(user: CreateUserInput!): AuthenticationPayload!
+  releasePayment(orderId: Float!): Float!
+  resetPassword(resetPasswordInput: ResetPasswordInput!): AuthenticationPayload!
+  sentMessage(message: CreateMessageInput!): Message!
+  updateDiscountType(discountType: UpdateDiscountTypeInput!, id: Float!): DiscountType!
+  updateMessage(id: Float!, message: UpdateMessageInput!): Message!
+  updateMyUser(user: UpdateUserInput!): User!
+  updateProcurementInformation(id: Float!, procurementInformation: UpdateProcurementInformationInput!): ProcurementInformation!
+  updateProduct(id: Float!, product: UpdateProductInput!): Product!
+  updateProductCategory(id: Float!, productCategory: UpdateProductCategoryInput!): ProductCategory!
+  updateSupplier(id: Float!, supplier: UpdateSupplierInput!): Supplier!
+}
+
+input NumericRangeInput {
+  max: Float
+  min: Float
+}
+
+type Order {
+  createdAt: DateTime!
+  customer: User!
+  deliveryAddress: String
+  executor: User
+  id: Float!
+  isPaid: Boolean!
+  isSelfDelivery: Boolean!
+  paymentUrl: String
+  products: [ProductQuantity!]!
+  status: OrderStatusEnum!
+  summaryPayment: Float!
+  updatedAt: DateTime!
+}
+
+enum OrderStatusEnum {
+  captcha_verify
+  cash_wait
+  cvv_verify
+  error
+  failure
+  hold_wait
+  invoice_wait
+  ivr_verify
+  otp_verify
+  password_verify
+  phone_verify
+  pin_verify
+  prepared
+  processing
+  receiver_verify
+  reversed
+  sender_verify
+  senderapp_verify
+  subscribed
+  success
+  three_ds_verify
+  unsubscribed
+  wait_accept
+  wait_card
+  wait_compensation
+  wait_lc
+  wait_qr
+  wait_reserve
+  wait_secure
+  wait_sender
+}
+
+type ProcurementInformation {
+  amount: Float!
+  deliveredDate: DateTime
+  description: String!
+  id: Float!
+  isDelivered: DateTime!
+  orderedDate: DateTime!
+  product: Product!
+  purchasePrice: Float!
+  supplier: Supplier!
+}
+
+type Product {
+  amount: Float!
+  categories: [ProductCategory!]!
+  description: String!
+  discountType: DiscountType
+  height: Float!
+  id: Float!
+  images: [File!]!
+  length: Float!
+  name: String!
+  retailPrice: Float!
+  size: SizeEnum!
+  width: Float!
+}
+
+type ProductCategory {
+  endDateRange: DateTime
+  id: Float!
+  name: String!
+  startDateRange: DateTime
+}
+
+type ProductQuantity {
+  product: Product!
+  quantity: Float!
+}
+
+input ProductQuantityInput {
+  productId: Int!
+  quantity: Int!
+}
+
+type Query {
+  getCities(findString: String!): String!
+  getCityStreets(cityRef: String!, findString: String!): String!
+  getMessages(findOptions: FindOptionsMessageInput): [Message!]!
+  getMysUser: User!
+  getOrders(findOptions: FindOptionsOrderInput): [Order!]!
+  getProcrumentInformations(findOptions: FindOptionsProcurementInformationInput): [ProcurementInformation!]!
+  getProductCategories(findOptions: FindOptionsProductCategoryInput): [ProductCategory!]!
+  getProducts(findOptions: FindOptionsProductInput): [Product!]!
+  getSettlements(cityName: String!): String!
+  getStreets(limit: Float!, settlementRef: String!, streetName: String!): String!
+  getSuppliers: [Supplier!]!
+  getWarehouses(cityName: String!, limit: Float!, streetName: String!): String!
+}
+
+input ResetPasswordInput {
+  newPassword: String!
+  oldPassword: String!
+}
+
+type Role {
+  id: Float!
+  name: String!
+}
+
+enum RoleEnum {
+  Admin
+  Customer
+  Manager
+}
+
+enum SizeEnum {
+  L
+  M
+  S
+  XL
+  XXL
+}
+
+type Supplier {
+  address: String!
+  companyName: String!
+  email: String!
+  id: Float!
+  phoneNumber: String!
+  website: String!
+}
+
+input UpdateDiscountTypeInput {
+  name: String
+  percentage: Float
+}
+
+input UpdateMessageInput {
+  email: String
+  messageStatus: MessageStatusEnum!
+  phoneNumber: String
+  textMessage: String
+}
+
+input UpdateProcurementInformationInput {
+  amount: Float
+  deliveredDate: DateTime
+  description: String
+  isDelivered: DateTime
+  orderedDate: DateTime
+  productId: Float
+  purchasePrice: Float
+  supplierId: Float
+}
+
+input UpdateProductCategoryInput {
+  endDateRange: DateTime
+  name: String
+  startDateRange: DateTime
+}
+
+input UpdateProductInput {
+  amount: Float!
+  categories: [CreateProductCategoryInput!]
+  description: String
+  height: Float
+  images: [CreateFileInput!]
+  length: Float
+  name: String
+  retailPrice: Float
+  size: SizeEnum
+  width: Float
+}
+
+input UpdateSupplierInput {
+  address: String
+  companyName: String
+  email: String
+  phoneNumber: String
+  website: String
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  phone: String
+  username: String
+  website: String
+}
+
+type User {
+  dicountType: DiscountType
+  email: String!
+  firstName: String!
+  id: Int!
+  lastName: String!
+  phone: String!
+  roles: [Role]
+  username: String!
+  website: String
+}
